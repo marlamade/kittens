@@ -400,12 +400,16 @@ function splitMetal(){
     alloy = gamePage.resPool.resourceMap["alloy"]
     concrete = gamePage.resPool.resourceMap["concrate"]
     gear = gamePage.resPool.resourceMap["gear"]
+    titanium = gamePage.resPool.resourceMap["titanium"]
     minvalue = Math.min(steel.value, alloy.value*3, concrete.value*20, gear.value*3)
 
     spare_steel = steel.value - minvalue
 
     if (alloy.value*3 == minvalue){
-        gamePage.craft("alloy", spare_steel/75)
+        times_to_craft_by_steel = Math.floor(spare_steel/75)
+        times_to_craft_by_titanium = Math.floor(titanium.value/10)
+        times_to_craft = Math.min(times_to_craft_by_steel, times_to_craft_by_titanium)
+        gamePage.craft("alloy", times_to_craft)
     } else if (concrete.value*10 == minvalue){
         gamePage.craft("concrate", spare_steel/25)
     } else if (gear.value*3 == minvalue){
