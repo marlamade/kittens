@@ -410,7 +410,7 @@ function splitMetal(){
         times_to_craft_by_titanium = Math.floor(titanium.value/10)
         times_to_craft = Math.min(times_to_craft_by_steel, times_to_craft_by_titanium)
         gamePage.craft("alloy", times_to_craft)
-    } else if (concrete.value*10 == minvalue){
+    } else if (concrete.value*20 == minvalue){
         gamePage.craft("concrate", spare_steel/25)
     } else if (gear.value*3 == minvalue){
         gamePage.craft("gear", spare_steel/15)
