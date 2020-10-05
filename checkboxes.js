@@ -467,7 +467,12 @@ function get_job(jobName)
 function click_bonfire_building(buildingName)
 {
     building = get_bulding(buildingName)
-    building.domNode.click()
+    //building.domNode.click()
+    building.controller.buyItem(building.model, {}, function(result) {
+        if(result){
+            building.update();
+        }
+    })
 }
 
 function get_bulding(buildingName){
