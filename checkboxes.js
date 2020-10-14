@@ -36,6 +36,9 @@ function addForm(){
     form.appendChild(createCheckbox("Grow Titanium"))
     form.appendChild(createCheckbox("Wait for Alicorns"))
     form.appendChild(createCheckbox("QuaOilSte"))
+    form.appendChild(createCheckbox("AccFacRea"))
+    form.appendChild(createCheckbox("ObsBro"))
+    form.appendChild(createCheckbox("BioMag"))
     form.appendChild(createCheckbox("Split Metal"))
     form.appendChild(createCheckbox("Cap Titanium"))
     form.appendChild(document.createTextNode("Buildings"))
@@ -159,6 +162,15 @@ function newProtocol(){
     if (document.getElementById("QuaOilSte").checked){
         fnList.push(quaOilSte)
     } 
+    if (document.getElementById("AccFacRea").checked){
+        fnList.push(accFacRea)
+    } 
+        if (document.getElementById("ObsBro").checked){
+        fnList.push(obsBro)
+    } 
+        if (document.getElementById("BioMag").checked){
+        fnList.push(bioMag)
+    } 
     if (document.getElementById("Split Metal").checked){
         fnList.push(splitMetal)
     } 
@@ -254,7 +266,7 @@ function trade(){
     var species = [
         "Lizards", "Sharks", "Griffins", "Nagas", "Zebras", "Spiders", "Leviathans"
     ];
-    
+    titanium = gamePage.resPool.resourceMap["titanium"]
     for (var i = 0; i < species.length; i++) {
 
         if (document.getElementById(species[i]).checked){ 
@@ -262,7 +274,12 @@ function trade(){
                 gamePage.craftAll("beam")
                 gamePage.craftAll("wood")
             }
-            trade_all_with(species[i])
+            
+            if (species[i] == "Zebras" && titanium.value > titanium.maxValue * .99){
+                trade_all_with("Griffins")
+            } else {
+                trade_all_with(species[i])
+            }
             if (species[i] == "Sharks"){
                 gamePage.craftAll("wood")
                 gamePage.craftAll("beam")
@@ -394,6 +411,32 @@ function quaOilSte(){
 
 }
 
+function accFacRea(){
+    gamePage.craftAll("steel")
+    gamePage.craftAll("plate")
+    gamePage.craftAll("concrate")
+    click_bonfire_building("Accelerator")
+    click_bonfire_building("Factory")
+    click_bonfire_building("Reactor")
+}
+
+function obsBro(){
+    gamePage.craftAll("steel")
+    click_bonfire_building("Observatory")
+    click_bonfire_building("Broadcast Tower")
+    click_bonfire_building("Mansion")
+    click_bonfire_building("Calciner")
+}
+
+
+function bioMag(){
+    gamePage.craftAll("steel")
+    gamePage.craftAll("plate")
+    gamePage.craftAll("alloy")
+    click_bonfire_building("Bio Lab")
+    click_bonfire_building("Magneto")
+}
+
 function splitMetal(){
     gamePage.craftAll("steel")
     steel = gamePage.resPool.resourceMap["steel"]
@@ -468,11 +511,13 @@ function click_bonfire_building(buildingName)
 {
     building = get_bulding(buildingName)
     //building.domNode.click()
-    building.controller.buyItem(building.model, {}, function(result) {
-        if(result){
-            building.update();
-        }
-    })
+    if (building != null){
+        building.controller.buyItem(building.model, {}, function(result) {
+            if(result){
+                building.update();
+            }
+        })
+    }
 }
 
 function get_bulding(buildingName){
